@@ -642,14 +642,14 @@ const TOOLS=[
   {id:"delete",label:"✕ Delete",color:"#ff4444"},
 ];
 
-function renderComp(c,selected){
+function renderComp(c,selected,onEdit){
   const x1=c.x1*CELL,y1=c.y1*CELL,x2=c.x2*CELL,y2=c.y2*CELL;
   const mx=(x1+x2)/2,my=(y1+y2)/2,isH=c.x1!==c.x2;
   const sel=selected===c.id,tc="#64ffda";
   const onClick=(e)=>{e.stopPropagation();};
   switch(c.type){
     case"resistor":return(
-      <g key={c.id} onClick={onClick} style={{cursor:"pointer"}}>
+      <g key={c.id} onClick={onClick} onDoubleClick={()=>onEdit&&onEdit(c)} style={{cursor:"pointer"}}>
         <line x1={x1} y1={y1} x2={isH?x1+12:x1} y2={isH?y1:y1+12} stroke={sel?"#fff":"#ffcc44"} strokeWidth="2"/>
         <rect x={isH?mx-18:x1-8} y={isH?my-8:my-18} width={isH?36:16} height={isH?16:36} fill="#0d1a0d" stroke={sel?"#fff":"#ffcc44"} strokeWidth={sel?2:1.5} rx="2"/>
         <line x1={isH?x2-12:x2} y1={isH?y2:y2-12} x2={x2} y2={y2} stroke={sel?"#fff":"#ffcc44"} strokeWidth="2"/>
@@ -658,7 +658,7 @@ function renderComp(c,selected){
         <text x={mx} y={isH?my+22:mx-14} fill="#ffaa00" fontSize="8" textAnchor="middle" fontFamily="monospace">{c.value}</text>
       </g>);
     case"vsource":return(
-      <g key={c.id} onClick={onClick} style={{cursor:"pointer"}}>
+      <g key={c.id} onClick={onClick} onDoubleClick={()=>onEdit&&onEdit(c)} style={{cursor:"pointer"}}>
         <line x1={x1} y1={y1} x2={isH?mx-16:x1} y2={isH?y1:my-16} stroke={sel?"#fff":"#44aaff"} strokeWidth="2"/>
         <circle cx={mx} cy={my} r="15" fill="#080f08" stroke={sel?"#fff":"#44aaff"} strokeWidth={sel?2:1.5}/>
         <text x={isH?mx-5:mx-1} y={isH?my+4:my-2} fill="#44aaff" fontSize="11" fontFamily="monospace">+</text>
@@ -668,7 +668,7 @@ function renderComp(c,selected){
         <text x={mx} y={isH?my-20:mx-20} fill="#44aaff" fontSize="8" textAnchor="middle" fontFamily="monospace">{c.label}={c.value}</text>
       </g>);
     case"isource":return(
-      <g key={c.id} onClick={onClick} style={{cursor:"pointer"}}>
+      <g key={c.id} onClick={onClick} onDoubleClick={()=>onEdit&&onEdit(c)} style={{cursor:"pointer"}}>
         <line x1={x1} y1={y1} x2={isH?mx-16:x1} y2={isH?y1:my-16} stroke={sel?"#fff":"#44ccff"} strokeWidth="2"/>
         <circle cx={mx} cy={my} r="15" fill="#080f08" stroke={sel?"#fff":"#44ccff"} strokeWidth={sel?2:1.5}/>
         <polygon points={isH?`${mx-8},${my-5} ${mx-8},${my+5} ${mx+8},${my}`:`${mx-5},${my-8} ${mx+5},${my-8} ${mx},${my+8}`} fill={sel?"#fff":"#44ccff"}/>
@@ -677,7 +677,7 @@ function renderComp(c,selected){
         <text x={mx} y={isH?my-20:mx-20} fill="#44ccff" fontSize="8" textAnchor="middle" fontFamily="monospace">{c.label}={c.value}</text>
       </g>);
     case"capacitor":return(
-      <g key={c.id} onClick={onClick} style={{cursor:"pointer"}}>
+      <g key={c.id} onClick={onClick} onDoubleClick={()=>onEdit&&onEdit(c)} style={{cursor:"pointer"}}>
         <line x1={x1} y1={y1} x2={isH?mx-6:x1} y2={isH?y1:my-6} stroke={sel?"#fff":"#ff8844"} strokeWidth="2"/>
         <line x1={isH?mx-6:x1-12} y1={isH?y1-12:my-6} x2={isH?mx-6:x1+12} y2={isH?y1+12:my-6} stroke={sel?"#fff":"#ff8844"} strokeWidth="2.5"/>
         <line x1={isH?mx+6:x1-12} y1={isH?y1-12:my+6} x2={isH?mx+6:x1+12} y2={isH?y1+12:my+6} stroke={sel?"#fff":"#ff8844"} strokeWidth="2.5"/>
@@ -686,7 +686,7 @@ function renderComp(c,selected){
         <text x={mx} y={isH?my-18:mx+18} fill="#ff8844" fontSize="8" textAnchor="middle" fontFamily="monospace">{c.label}={c.value}</text>
       </g>);
     case"diode":return(
-      <g key={c.id} onClick={onClick} style={{cursor:"pointer"}}>
+      <g key={c.id} onClick={onClick} onDoubleClick={()=>onEdit&&onEdit(c)} style={{cursor:"pointer"}}>
         <line x1={x1} y1={y1} x2={isH?mx-12:x1} y2={isH?y1:my-12} stroke={sel?"#fff":"#00ff88"} strokeWidth="2"/>
         <polygon points={isH?`${mx-12},${y1-10} ${mx-12},${y1+10} ${mx+8},${y1}`:`${x1-10},${my-12} ${x1+10},${my-12} ${x1},${my+8}`} fill="none" stroke={sel?"#fff":"#00ff88"} strokeWidth="2"/>
         <line x1={isH?mx+8:x1-10} y1={isH?y1-10:my+8} x2={isH?mx+8:x1+10} y2={isH?y1+10:my+8} stroke={sel?"#fff":"#00ff88"} strokeWidth="2"/>
@@ -695,7 +695,7 @@ function renderComp(c,selected){
         <text x={mx} y={isH?my-16:mx+16} fill="#00ff88" fontSize="8" textAnchor="middle" fontFamily="monospace">{c.label}</text>
       </g>);
     case"bjt":return(
-      <g key={c.id} onClick={onClick} style={{cursor:"pointer"}}>
+      <g key={c.id} onClick={onClick} onDoubleClick={()=>onEdit&&onEdit(c)} style={{cursor:"pointer"}}>
         <circle cx={x1*1+20} cy={y1*1} r="22" fill="none" stroke={sel?"#fff":"#44ff88"} strokeWidth={sel?2:1.5}/>
         <line x1={x1} y1={y1} x2={x1+8} y2={y1} stroke={sel?"#fff":"#44ff88"} strokeWidth="2"/>
         <line x1={x1+8} y1={y1-14} x2={x1+8} y2={y1+14} stroke={sel?"#fff":"#44ff88"} strokeWidth="2.5"/>
@@ -708,7 +708,7 @@ function renderComp(c,selected){
         <text x={x1+32} y={y1+26} fill="#44ccff" fontSize="8" fontFamily="monospace">E</text>
       </g>);
     case"ground":return(
-      <g key={c.id} onClick={onClick} style={{cursor:"pointer"}}>
+      <g key={c.id} onClick={onClick} onDoubleClick={()=>onEdit&&onEdit(c)} style={{cursor:"pointer"}}>
         <line x1={x1} y1={y1} x2={x1} y2={y1+10} stroke={sel?"#fff":"#aabbaa"} strokeWidth="2"/>
         <line x1={x1-14} y1={y1+10} x2={x1+14} y2={y1+10} stroke={sel?"#fff":"#aabbaa"} strokeWidth="2.5"/>
         <line x1={x1-9} y1={y1+15} x2={x1+9} y2={y1+15} stroke={sel?"#fff":"#aabbaa"} strokeWidth="2"/>
@@ -716,7 +716,7 @@ function renderComp(c,selected){
         <circle cx={x1} cy={y1} r="3.5" fill={tc}/>
       </g>);
     case"node":return(
-      <g key={c.id} onClick={onClick} style={{cursor:"pointer"}}>
+      <g key={c.id} onClick={onClick} onDoubleClick={()=>onEdit&&onEdit(c)} style={{cursor:"pointer"}}>
         <circle cx={x1} cy={y1} r="5" fill={sel?"#fff":"#ffcc44"} stroke={sel?"#ffcc44":"#ffaa00"} strokeWidth="1.5"/>
         {c.label&&<text x={x1+8} y={y1+4} fill="#ffcc44" fontSize="8" fontFamily="monospace">{c.label}</text>}
       </g>);
@@ -724,6 +724,57 @@ function renderComp(c,selected){
   }
 }
 
+function solveMNA(comps,wires){
+  const key=(x,y)=>`${x},${y}`;
+  const par={};
+  const find=k=>{if(!par[k])par[k]=k;if(par[k]!==k)par[k]=find(par[k]);return par[k];};
+  const union=(a,b)=>{const ra=find(a),rb=find(b);if(ra!==rb)par[ra]=rb;};
+  const reg=k=>{if(!par[k])par[k]=k;};
+
+  comps.forEach(c=>{reg(key(c.x1,c.y1));if(c.x2!==undefined)reg(key(c.x2,c.y2));});
+  wires.forEach(w=>{
+    reg(key(w.x1,w.y1));reg(key(w.x2,w.y2));
+    if(w.x1===w.x2){for(let y=Math.min(w.y1,w.y2);y<=Math.max(w.y1,w.y2);y++){reg(key(w.x1,y));union(key(w.x1,y),key(w.x1,w.y1));}}
+    else{for(let x=Math.min(w.x1,w.x2);x<=Math.max(w.x1,w.x2);x++){reg(key(x,w.y1));union(key(x,w.y1),key(w.x1,w.y1));}}
+    union(key(w.x1,w.y1),key(w.x2,w.y2));
+  });
+
+  const gnds=comps.filter(c=>c.type==="ground").map(c=>find(key(c.x1,c.y1)));
+  if(!gnds.length)return{error:"No ground node. Add a ⏚ Ground component."};
+  const gndRoot=gnds[0];
+
+  const nodeRoots=[...new Set(Object.keys(par).map(k=>find(k)).filter(r=>r!==gndRoot))];
+  const ni=k=>{const r=find(key(k.x,k.y));if(r===gndRoot)return 0;return nodeRoots.indexOf(r)+1;};
+  const N=nodeRoots.length;
+
+  const parseV=v=>{if(!v)return 0;const s=String(v).replace(/[ΩV]/gi,"");const n=parseFloat(s);if(/k/i.test(s))return n*1e3;if(/M/.test(s))return n*1e6;if(/m/.test(s)&&!/mA/i.test(s))return n*1e-3;if(/µ|u/i.test(s))return n*1e-6;return n||0;};
+
+  const res=comps.filter(c=>c.type==="resistor");
+  const vsrc=comps.filter(c=>c.type==="vsource");
+  const isrc=comps.filter(c=>c.type==="isource");
+  const M=vsrc.length,sz=N+M;
+  if(sz===0)return{error:"No components connected. Build a circuit first."};
+
+  const mat=Array.from({length:sz+1},()=>Array(sz+2).fill(0));
+  res.forEach(r=>{const R=parseV(r.value)||1000,g=1/R,n1=ni({x:r.x1,y:r.y1}),n2=ni({x:r.x2,y:r.y2});if(n1>0)mat[n1][n1]+=g;if(n2>0)mat[n2][n2]+=g;if(n1>0&&n2>0){mat[n1][n2]-=g;mat[n2][n1]-=g;}});
+  isrc.forEach(s=>{const I=parseV(s.value)||0,n1=ni({x:s.x1,y:s.y1}),n2=ni({x:s.x2,y:s.y2});if(n2>0)mat[n2][sz+1]+=I;if(n1>0)mat[n1][sz+1]-=I;});
+  vsrc.forEach((vs,k)=>{const V=parseV(vs.value)||0,np=ni({x:vs.x1,y:vs.y1}),nn=ni({x:vs.x2,y:vs.y2}),row=N+k+1;if(np>0){mat[np][row]+=1;mat[row][np]+=1;}if(nn>0){mat[nn][row]-=1;mat[row][nn]-=1;}mat[row][sz+1]=V;});
+
+  for(let col=1;col<=sz;col++){
+    let pr=-1;for(let r=col;r<=sz;r++)if(Math.abs(mat[r][col])>1e-12){pr=r;break;}
+    if(pr===-1)continue;
+    if(pr!==col){const t=mat[col];mat[col]=mat[pr];mat[pr]=t;}
+    const pv=mat[col][col];
+    for(let r=1;r<=sz;r++){if(r===col||Math.abs(mat[r][col])<1e-15)continue;const f=mat[r][col]/pv;for(let c=col;c<=sz+1;c++)mat[r][c]-=f*mat[col][c];}
+  }
+  const sol=Array(sz+1).fill(0);
+  for(let r=1;r<=sz;r++)if(Math.abs(mat[r][r])>1e-15)sol[r]=mat[r][sz+1]/mat[r][r];
+
+  const nodeVoltages={GND:0};
+  nodeRoots.forEach((root,i)=>{nodeVoltages[`N${i+1}`]=sol[i+1];});
+  const branchCurrents=res.map(r=>{const R=parseV(r.value)||1000,v1=sol[ni({x:r.x1,y:r.y1})],v2=sol[ni({x:r.x2,y:r.y2})];return{label:r.label,current:(v1-v2)/R,voltage:v1-v2};});
+  return{nodeVoltages,branchCurrents};
+}
 function CircuitBuilder(){
   const [tool,setTool]=useState("wire");
   const [orient,setOrient]=useState("h");
@@ -734,6 +785,10 @@ function CircuitBuilder(){
   const [hover,setHover]=useState(null);
   const [editVal,setEditVal]=useState("");
   const [editLabel,setEditLabel]=useState("");
+  const [promptComp,setPromptComp]=useState(null);
+  const [promptVal,setPromptVal]=useState("");
+  const [analysis,setAnalysis]=useState(null);
+  const [sweepData,setSweepData]=useState([]);
 
   const snap=v=>Math.round(v/CELL);
   const selectedComp=comps.find(c=>c.id===selected);
@@ -787,6 +842,8 @@ function CircuitBuilder(){
     if(x2>COLS){x2=gx;y2=gy+2;}
     if(y2>ROWS){x2=gx+2;y2=gy;}
     setComps(p=>[...p,{id,type:tool,x1:gx,y1:gy,x2,y2,value:def,label:lbl}]);
+    setPromptComp({id,x:(gx+1)*CELL,y:gy*CELL});
+    setPromptVal(def);
   };
 
   const applyEdit=()=>{
@@ -872,9 +929,103 @@ function CircuitBuilder(){
               {/* Wire preview */}
               {wireStart&&hover&&<line x1={wireStart.x*CELL} y1={wireStart.y*CELL} x2={hover.x*CELL} y2={hover.y*CELL} stroke="#00ff8855" strokeWidth="1.5" strokeDasharray="5,3"/>}
               {/* Components */}
-              {comps.map(c=>renderComp(c,selected))}
+              {comps.map(c=>renderComp(c,selected,(comp)=>{
+                setSelected(comp.id);
+                setEditVal(comp.value||"");
+                setEditLabel(comp.label||"");
+              }))}
             </svg>
           </div>
+          {/* ── Value prompt overlay ── */}
+          {promptComp&&(
+            <div style={{margin:"10px 0",padding:"10px 14px",background:"#0a2a0a",border:"1px solid #00ff8844",borderRadius:8,display:"flex",alignItems:"center",gap:10,flexWrap:"wrap"}}>
+              <span style={{color:"#00ff88",fontSize:11,fontFamily:"monospace"}}>⚡ Set value for placed component:</span>
+              <input autoFocus value={promptVal} onChange={e=>setPromptVal(e.target.value)}
+                onKeyDown={e=>{
+                  if(e.key==="Enter"){setComps(p=>p.map(c=>c.id===promptComp.id?{...c,value:promptVal}:c));setPromptComp(null);}
+                  if(e.key==="Escape"){setPromptComp(null);}
+                }}
+                style={{flex:1,minWidth:120,background:"#050f05",border:"1px solid #00ff8844",borderRadius:4,color:"#00ff88",fontFamily:"monospace",fontSize:13,padding:"5px 8px"}}
+                placeholder="e.g. 250, 4.7k, 12V, 2.2mA"/>
+              <button onClick={()=>{setComps(p=>p.map(c=>c.id===promptComp.id?{...c,value:promptVal}:c));setPromptComp(null);}}
+                style={{padding:"5px 14px",borderRadius:4,border:"none",background:"#00ff8825",color:"#00ff88",fontFamily:"monospace",fontSize:11,cursor:"pointer"}}>✓ OK</button>
+              <button onClick={()=>setPromptComp(null)}
+                style={{padding:"5px 10px",borderRadius:4,border:"none",background:"transparent",color:"#446644",fontFamily:"monospace",fontSize:11,cursor:"pointer"}}>Skip</button>
+              <span style={{color:"#334433",fontSize:9}}>Press Enter to confirm, Esc to skip</span>
+            </div>
+          )}
+
+          {/* ── MNA Analysis ── */}
+          <div style={{margin:"10px 0",display:"flex",gap:8,alignItems:"center",flexWrap:"wrap"}}>
+            <button onClick={()=>{const res=solveMNA(comps,wires);setAnalysis(res);setSweepData([]);}}
+              style={{padding:"7px 18px",borderRadius:5,border:"none",cursor:"pointer",fontFamily:"monospace",fontSize:11,fontWeight:"bold",background:"#0a2a0a",color:"#00ff88",border:"1px solid #00ff8844"}}>
+              ⚡ Analyze Circuit
+            </button>
+            {analysis&&!analysis.error&&(
+              <button onClick={()=>{
+                const vsList=comps.filter(c=>c.type==="vsource");
+                if(!vsList.length){alert("Add a voltage source to sweep");return;}
+                const src=vsList[0];
+                const pts=[];
+                for(let v=0;v<=20;v+=0.5){
+                  const tempComps=comps.map(c=>c.id===src.id?{...c,value:`${v}V`}:c);
+                  const r=solveMNA(tempComps,wires);
+                  if(!r.error){
+                    const pt={V_src:v};
+                    Object.entries(r.nodeVoltages).forEach(([n,val])=>pt[n]=parseFloat(val.toFixed(4)));
+                    r.branchCurrents.forEach(b=>pt[`I_${b.label}`]=parseFloat((b.current*1000).toFixed(4)));
+                    pts.push(pt);
+                  }
+                }
+                setSweepData(pts);
+              }} style={{padding:"7px 18px",borderRadius:5,cursor:"pointer",fontFamily:"monospace",fontSize:11,background:"#0a1a2a",color:"#44aaff",border:"1px solid #44aaff44"}}>
+                📊 Sweep & Graph
+              </button>
+            )}
+            {analysis&&analysis.error&&<span style={{color:"#ff4444",fontSize:11,fontFamily:"monospace"}}>⚠ {analysis.error}</span>}
+          </div>
+
+          {/* Analysis results */}
+          {analysis&&!analysis.error&&(
+            <div style={{marginBottom:10,padding:"10px 14px",background:"#080f08",borderRadius:8,border:"1px solid #1a3a1a"}}>
+              <div style={{fontSize:10,color:"#446644",marginBottom:8,letterSpacing:2}}>◈ ANALYSIS RESULTS</div>
+              <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(130px,1fr))",gap:6,marginBottom:8}}>
+                {Object.entries(analysis.nodeVoltages).map(([n,v])=>(
+                  <div key={n} style={{background:"#0a1a0a",borderRadius:5,padding:"6px 10px",border:"1px solid #1a3a1a"}}>
+                    <div style={{color:"#446644",fontSize:9}}>{n}</div>
+                    <div style={{color:"#44aaff",fontSize:14,fontFamily:"monospace",fontWeight:"bold"}}>{typeof v==="number"?v.toFixed(4):"0.0000"} V</div>
+                  </div>
+                ))}
+                {analysis.branchCurrents.map(b=>(
+                  <div key={b.label} style={{background:"#0a1a0a",borderRadius:5,padding:"6px 10px",border:"1px solid #1a3a1a"}}>
+                    <div style={{color:"#446644",fontSize:9}}>I_{b.label}</div>
+                    <div style={{color:"#ff9f43",fontSize:14,fontFamily:"monospace",fontWeight:"bold"}}>{(b.current*1000).toFixed(3)} mA</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Sweep graph */}
+          {sweepData.length>0&&(()=>{
+            const keys=Object.keys(sweepData[0]).filter(k=>k!=="V_src");
+            const colors=["#00ff88","#44ccff","#ff8844","#ff44aa","#ffcc44","#c77dff"];
+            return(
+              <div style={{marginBottom:10,padding:"10px 14px",background:"#080f08",borderRadius:8,border:"1px solid #1a3a1a"}}>
+                <div style={{fontSize:10,color:"#446644",marginBottom:8,letterSpacing:2}}>◈ SWEEP GRAPH — V_source (0→20V)</div>
+                <ResponsiveContainer width="100%" height={240}>
+                  <LineChart data={sweepData} margin={{top:5,right:10,bottom:20,left:10}}>
+                    <CartesianGrid stroke="#0d1f0d" strokeDasharray="3 3"/>
+                    <XAxis dataKey="V_src" stroke="#446644" tick={{fill:"#446644",fontSize:10}} label={{value:"V_source (V)",position:"insideBottom",fill:"#446644",fontSize:10,dy:16}}/>
+                    <YAxis stroke="#446644" tick={{fill:"#446644",fontSize:10}} label={{value:"V (V) / I (mA)",angle:-90,position:"insideLeft",fill:"#446644",fontSize:10,dx:-4}}/>
+                    <Tooltip contentStyle={{background:"#0a1a0a",border:"1px solid #1a3a1a",fontSize:11,fontFamily:"monospace"}}/>
+                    <Legend wrapperStyle={{fontSize:10}}/>
+                    {keys.map((k,i)=><Line key={k} type="monotone" dataKey={k} stroke={colors[i%colors.length]} strokeWidth={1.8} dot={false} name={k}/>)}
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+            );
+          })()}
           <div style={{marginTop:10,padding:"8px 12px",background:"#0a1a0a",borderRadius:6,fontSize:9,color:"#334433",lineHeight:2,display:"grid",gridTemplateColumns:"1fr 1fr"}}>
             <span>▸ Wire: click two nodes to connect</span>
             <span>▸ Select: click component to edit</span>
